@@ -1,6 +1,7 @@
 import plotly.express as px
 from palmerpenguins import load_penguins
 from shiny.express import input, ui, render, reactive
+from shiny import reactive
 from shinywidgets import render_widget, render_plotly
 import seaborn as sns
 
@@ -126,4 +127,5 @@ def filtered_penguins():
     if selected_species:
         return penguins[penguins['species'].isin(selected_species)]
     return penguins  # Return all data if no species are selected
+
 
