@@ -1,6 +1,6 @@
 import plotly.express as px
 from palmerpenguins import load_penguins
-from shiny.express import input, ui, render, reactive
+from shiny.express import input, ui, render
 from shiny import reactive
 from shinywidgets import render_widget, render_plotly
 import seaborn as sns
@@ -87,7 +87,7 @@ with ui.layout_columns():
             @render_plotly
             def plotly_scatterplot():
                 return px.scatter(
-                data_frame=penguins,
+                data_frame=filtered_df(),
                 x="body_mass_g",
                 y="bill_depth_mm",
                 color="species",
@@ -103,7 +103,7 @@ with ui.layout_columns():
             @render.plot
             def plot2():
                 ax = sns.histplot(
-                    data=penguins,
+                    data=filtered_df(),
                     x=input.selected_attribute(),
                     bins=input.seaborn_bin_count(),
             )
@@ -121,11 +121,10 @@ with ui.layout_columns():
 # The function will be called whenever an input functions used to generate that output changes.
 # Any output that depends on the reactive function (e.g., filtered_data()) will be updated when the data changes.
 
+# Reactive function to filter data
 @reactive.Calc
-def filtered_penguins():
+def filtered_df():
     selected_species = input.selected_species_list()
     if selected_species:
         return penguins[penguins['species'].isin(selected_species)]
     return penguins  # Return all data if no species are selected
-
-
