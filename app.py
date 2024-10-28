@@ -1,6 +1,6 @@
 import plotly.express as px
 from palmerpenguins import load_penguins
-from shiny.express import input, ui, render
+from shiny.express import input, ui, render, reactive
 from shinywidgets import render_widget, render_plotly
 import seaborn as sns
 
@@ -120,7 +120,10 @@ with ui.layout_columns():
 # The function will be called whenever an input functions used to generate that output changes.
 # Any output that depends on the reactive function (e.g., filtered_data()) will be updated when the data changes.
 
-@reactive.calc
-def filtered_data():
-    return penguins
+@reactive.Calc
+def filtered_penguins():
+    selected_species = input.selected_species_list()
+    if selected_species:
+        return penguins[penguins['species'].isin(selected_species)]
+    return penguins  # Return all data if no species are selected
 
