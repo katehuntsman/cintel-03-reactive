@@ -122,5 +122,5 @@ with ui.layout_columns():
 
 @reactive.calc
 def filtered_data():
-    return penguins_df
+    return penguins
 
