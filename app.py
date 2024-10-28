@@ -87,7 +87,7 @@ with ui.layout_columns():
             @render_plotly
             def plotly_scatterplot():
                 return px.scatter(
-                data_frame=filtered_df(),
+                data_frame=filtered_data(),
                 x="body_mass_g",
                 y="bill_depth_mm",
                 color="species",
@@ -103,7 +103,7 @@ with ui.layout_columns():
             @render.plot
             def plot2():
                 ax = sns.histplot(
-                    data=filtered_df(),
+                    data=filtered_data(),
                     x=input.selected_attribute(),
                     bins=input.seaborn_bin_count(),
             )
@@ -123,7 +123,7 @@ with ui.layout_columns():
 
 # Reactive function to filter data
 @reactive.Calc
-def filtered_df():
+def filtered_data():
     selected_species = input.selected_species_list()
     if selected_species:
         return penguins[penguins['species'].isin(selected_species)]
